@@ -22,27 +22,28 @@ A simple Command Line Interface (CLI) application that retrieves and displays re
 
 1. **Clone the Repository:**
 
-   ```bash
+```bash
    git clone git@github.com:Sean-Thomo/github-activity.git
    cd github-activity
-   ```
+```
 
 2. **Install dependencies:**
 
-   ```bash
+```bash
    mvn install
-   ```
+```
 
 3. **Run the application:**
-   ```bash
+
+```bash
    mvn exec:java -Dexec.mainClass="org.example.Main" -Dexec.args="<username>"
-   ```
+```
 
 # Example
 
-    ```bash
+```bash
     mvn exec:java -Dexec.mainClass="org.example.Main" -Dexec.args="Sean-Thomo"
-    ```
+```
 
 Usage
 bash
@@ -53,13 +54,13 @@ github-activity-cli <username>
 
 # Output example:
 
-    ```bash
+```bash
     Pushed 3 commits to kamranahmedse/developer-roadmap
 
     Opened a new issue in kamranahmedse/developer-roadmap
 
     Starred kamranahmedse/developer-roadmap
-    ```
+```
 
 ### Activity Properties
 
