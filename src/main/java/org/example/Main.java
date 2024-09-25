@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.Scanner;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class Main {
     public static void main(String[] args) throws IOException {
@@ -31,10 +33,40 @@ public class Main {
 
                 input.close();
 
-                System.out.println(response.toString());
+                // Parse the JSON response
+                JSONArray events = new JSONArray(response.toString());
+                int pushCount = 0;
+                boolean issueOpened = false;
+                boolean starredRepo = false;
+
+                for (int i = 0; i < events.length(); i++) {
+                    JSONObject event = events.getJSONObject(i);
+                    String type = event.getString("type");
+                    JSONObject repo = event.getJSONObject("repo");
+                    String repoName = repo.getString("name");
+
+                    if (type.equals("PushEvent")) {
+                        pushCount++;
+                    } else if (type.equals("IssuesEvent") && event.getJSONObject("payload").getString("action").equals("opened")) {
+                        issueOpened = true;
+                    } else if (type.equals("WatchEvent") && event.getString("action").equals("started")) {
+                        starredRepo = true;
+                    }
+                }
+
+                // Display the results
+                System.out.println("- Pushed " + pushCount + " commits to " + args[0] + "/developer-roadmap");
+                if (issueOpened) {
+                    System.out.println("- Opened a new issue in " + args[0] + "/developer-roadmap");
+                }
+                if (starredRepo) {
+                    System.out.println("- Starred " + args[0] + "/developer-roadmap");
+                }
             } else {
                 System.out.println("Something went wrong while fetching data.");
             }
+        } else {
+            System.out.println("Please provide a GitHub username.");
         }
     }
 }
